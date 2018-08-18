@@ -106,7 +106,7 @@ namespace ExchangeRates.BusinessLayer
                 }
 
 
-                if (currencyFrom == refCurrency)
+                if (currencyFrom.ToUpper() == refCurrency.ToUpper())
                 {
                     rateFrom = 1m;
                 }
@@ -126,7 +126,7 @@ namespace ExchangeRates.BusinessLayer
 
 
 
-                if (currencyTo == refCurrency)
+                if (currencyTo.ToUpper() == refCurrency.ToUpper())
                 {
                     rateTo = 1m;
                 }
