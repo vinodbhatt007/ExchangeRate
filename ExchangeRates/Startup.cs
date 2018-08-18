@@ -16,6 +16,7 @@ namespace ExchangeRates
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.MapHttpAttributeRoutes();
 
             appBuilder.UseWebApi(config);
         }

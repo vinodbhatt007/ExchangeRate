@@ -1,15 +1,15 @@
-﻿using Microsoft.Owin.Hosting;
+﻿using ExchangeRates.Common;
+using Microsoft.Owin.Hosting;
 using System;
-using System.Net.Http;
+using System.Configuration;
 
 namespace ExchangeRates
 {
     class Program
     {
         static void Main()
-        {
-            string baseAddress = "http://localhost:9000/";
-
+        {      
+            string baseAddress = ConfigurationManager.AppSettings["BaseURL"].ToString();
             // Start OWIN host 
             using (WebApp.Start(url: baseAddress))
             {
