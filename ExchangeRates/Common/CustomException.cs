@@ -9,10 +9,6 @@ namespace ExchangeRates.Common
     {
         public ErrorModel ErrorModel;
 
-        public CustomException()
-        {
-        }
-
         public CustomException(HttpStatusCode errorCode, string errorMessage)
         {
             ErrorModel = new ErrorModel(errorMessage, errorCode);

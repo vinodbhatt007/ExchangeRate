@@ -1,5 +1,4 @@
 ﻿using ExchangeRates.Common;
-using ExchangeRates.Filters;
 using ExchangeRates.Model;
 using System;
 using System.Web.Http;
@@ -9,8 +8,8 @@ namespace ExchangeRates.Controller
     [RoutePrefix("Rate")]
     public class ExchangeRatesController : ApiController
     {
-        [Route("{currencyPair = currencyPair}")] //Sample Route http://localhost:9000/Rate?CurrencyPair=USDINR
-        [Route("{currencyPair}")] // Sample Route http://localhost:9000/Rate/USDINR
+        [Route("{currencyPair = currencyPair}")] //Sample Route http://localhost:7000/Rate?CurrencyPair=USDINR
+        [Route("{currencyPair}")] // Sample Route http://localhost:7000/Rate/USDINR
         public IHttpActionResult GetExchangeRate(string currencyPair)
         {
             try

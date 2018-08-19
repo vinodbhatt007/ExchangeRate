@@ -12,10 +12,6 @@ namespace ExchangeRates.Model
         public string ErrorMessage { get; set; }
         public HttpStatusCode ErrorCode { get; set; }
 
-        public ErrorModel()
-        {
-        }
-
         public ErrorModel(string errorMessage, HttpStatusCode errorCode)
         {
             this.ErrorMessage = errorMessage;

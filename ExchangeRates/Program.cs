@@ -1,5 +1,4 @@
-﻿using ExchangeRates.Common;
-using Microsoft.Owin.Hosting;
+﻿using Microsoft.Owin.Hosting;
 using System;
 using System.Configuration;
 
@@ -9,7 +8,7 @@ namespace ExchangeRates
     {
         static void Main()
         {      
-            string baseAddress = ConfigurationManager.AppSettings["BaseURL"].ToString();
+            string baseAddress = ConfigurationManager.AppSettings["BaseURL"];
             // Start OWIN host 
             using (WebApp.Start(url: baseAddress))
             {
