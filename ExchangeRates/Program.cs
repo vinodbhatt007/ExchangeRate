@@ -12,7 +12,7 @@ namespace ExchangeRates
             // Start OWIN host 
             using (WebApp.Start(url: baseAddress))
             {
-                Console.WriteLine("Service Hosted " + baseAddress);
+                Console.WriteLine("Service Hosted On Server: " + baseAddress);
                 System.Threading.Thread.Sleep(-1);
             }
         }
