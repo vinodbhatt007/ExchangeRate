@@ -111,6 +111,7 @@ namespace ExchangeRates.BusinessLayer
                 // Curency Pair Validation
                 if (currencyPair.Length > 6)
                 {
+                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Length Cannot be greater than 6");
                     CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Length Cannot be greater than 6");
                     throw exception;
                 }
