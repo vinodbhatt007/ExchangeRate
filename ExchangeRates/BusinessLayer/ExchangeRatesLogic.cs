@@ -37,9 +37,11 @@ namespace ExchangeRates.BusinessLayer
 
                     if (xmlr.GetAttribute("currency") != null && xmlr.GetAttribute("rate") != null)
                     {
-                        exchangeRatesModel = new ExchangeRatesModel();
-                        exchangeRatesModel.Currency = xmlr.GetAttribute("currency");
-                        exchangeRatesModel.Rate = decimal.Parse(xmlr.GetAttribute("rate"), CultureInfo.InvariantCulture);
+                        exchangeRatesModel = new ExchangeRatesModel
+                        {
+                            Currency = xmlr.GetAttribute("currency").ToUpper(),
+                            Rate = decimal.Parse(xmlr.GetAttribute("rate"), CultureInfo.InvariantCulture)
+                        };
                         allExchangeRates.Add(exchangeRatesModel);
                     }
                 }
@@ -118,8 +120,8 @@ namespace ExchangeRates.BusinessLayer
 
                 try
                 {
-                    currencyFrom = currencyPair.Substring(0, 3);
-                    currencyTo = currencyPair.Substring(3, 3);
+                    currencyFrom = currencyPair.Substring(0, 3).ToUpper();
+                    currencyTo = currencyPair.Substring(3, 3).ToUpper();
                 }
                 catch(Exception ex)
                 {
@@ -129,18 +131,19 @@ namespace ExchangeRates.BusinessLayer
                 }
 
                 // SET rateFrom to 1 if conversion is being done from EUR
-                if (currencyFrom.ToUpper() == refCurrency.ToUpper())
+                if (currencyFrom == refCurrency)
                 {
                     rateFrom = 1m;
                 }
                 else
                 {
-                    if (allExchangeRates.Any(cur => cur.Currency.ToUpper() == currencyFrom.ToUpper()))
+                    if (allExchangeRates.Any(cur => cur.Currency == currencyFrom))
                     {
-                        rateFrom = allExchangeRates.Where(x => x.Currency.ToUpper() == currencyFrom.ToUpper()).Select(x => x.Rate).FirstOrDefault();
+                        rateFrom = allExchangeRates.Where(x => x.Currency == currencyFrom).Select(x => x.Rate).FirstOrDefault();
                     }
                     else
                     {
+                        Logger.Error("Error Occured in GetExchangeRate(): Currency '" + currencyFrom + "' not available for conversion in XML File");
                         CustomException exception = new CustomException(System.Net.HttpStatusCode.NotFound, "Currency '" + currencyFrom + "' not available for conversion in XML File");
                         throw exception;
                     }
@@ -149,18 +152,19 @@ namespace ExchangeRates.BusinessLayer
 
 
                 // SET rateTo to 1 if conversion is being done to EUR
-                if (currencyTo.ToUpper() == refCurrency.ToUpper())
+                if (currencyTo == refCurrency)
                 {
                     rateTo = 1m;
                 }
                 else
                 {
-                    if (allExchangeRates.Any(cur => cur.Currency.ToUpper() == currencyTo.ToUpper()))
+                    if (allExchangeRates.Any(cur => cur.Currency == currencyTo))
                     {
-                        rateTo = allExchangeRates.Where(x => x.Currency.ToUpper() == currencyTo.ToUpper()).Select(x => x.Rate).FirstOrDefault();
+                        rateTo = allExchangeRates.Where(x => x.Currency== currencyTo).Select(x => x.Rate).FirstOrDefault();
                     }
                     else
                     {
+                        Logger.Error("Error Occured in GetExchangeRate(): Currency '" + currencyTo + "' not available for conversion in XML File");
                         CustomException exception = new CustomException(System.Net.HttpStatusCode.NotFound, "Currency '" + currencyTo + "' not available for conversion in XML File");
                         throw exception;
                     }
