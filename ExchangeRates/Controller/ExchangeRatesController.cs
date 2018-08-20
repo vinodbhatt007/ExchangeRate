@@ -20,6 +20,7 @@ namespace ExchangeRates.Controller
             catch (CustomException ex)
             {
                 //Handling Custom Exceptions
+                Logger.Error(ex.ErrorModel.ErrorMessage);
                 ErrorModel errorModel = new ErrorModel(ex.ErrorModel.ErrorMessage, ex.ErrorModel.ErrorCode);
                 return Json(errorModel);
             }
