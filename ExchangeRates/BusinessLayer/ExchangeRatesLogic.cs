@@ -53,6 +53,47 @@ namespace ExchangeRates.BusinessLayer
         {
             try
             {
+                decimal rateFrom = 0m;
+                decimal rateTo = 0m;
+                string currencyFrom = string.Empty;
+                string currencyTo = string.Empty;
+                //Read Reference Currency from Config File
+                string refCurrency = ConfigurationManager.AppSettings["RefCurrency"]; //EUR
+
+                // Currency Pair Validations
+                if (string.IsNullOrEmpty(currencyPair))
+                {
+                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Currency Pair cannot be NULL or Empty");
+                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Currency Pair cannot be NULL or Empty");
+                    throw exception;
+                }
+                else if (currencyPair.Length > 6)
+                {
+                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Length Cannot be greater than 6");
+                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Length Cannot be greater than 6");
+                    throw exception;
+                }
+
+
+                // Get CurrencyTo and CurrencyFrom 
+                try
+                {
+                    currencyFrom = currencyPair.Substring(0, 3).ToUpper();
+                    currencyTo = currencyPair.Substring(3, 3).ToUpper();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Error Occured in GetExchangeRate(): " + ex.Message);
+                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair");
+                    throw exception;
+                }
+
+                // Set Reference Currency to EUR, if RefCurrency is null or not provided in Config file
+                if (string.IsNullOrEmpty(refCurrency))
+                {
+                    refCurrency = "EUR";
+                }
+
                 #region GetAllExchangeRates Caching
                 allExchangeRates = new List<ExchangeRatesModel>();
                 ObjectCache cache = MemoryCache.Default;
@@ -94,41 +135,6 @@ namespace ExchangeRates.BusinessLayer
                     cache.Add(cacheKey, allExchangeRates, cacheItemPolicy);
                 }
                 #endregion
-
-                // Read Reference Currency from Config File
-                string refCurrency = ConfigurationManager.AppSettings["RefCurrency"]; //EUR
-                
-                // Set Reference Currency to EUR, if RefCurrency is null or not provided in Config file
-                if (string.IsNullOrEmpty(refCurrency))
-                {
-                    refCurrency = "EUR";
-                }
-
-                decimal rateFrom = 0m;
-                decimal rateTo = 0m;
-                string currencyFrom = string.Empty;
-                string currencyTo = string.Empty;
-
-
-                // Curency Pair Validation
-                if (currencyPair.Length > 6)
-                {
-                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Length Cannot be greater than 6");
-                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Length Cannot be greater than 6");
-                    throw exception;
-                }
-
-                try
-                {
-                    currencyFrom = currencyPair.Substring(0, 3).ToUpper();
-                    currencyTo = currencyPair.Substring(3, 3).ToUpper();
-                }
-                catch(Exception ex)
-                {
-                    Logger.Error("Error Occured in GetExchangeRate(): " + ex.Message);
-                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair");
-                    throw exception;
-                }
 
                 // SET rateFrom to 1 if conversion is being done from EUR
                 if (currencyFrom == refCurrency)
