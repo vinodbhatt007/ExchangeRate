@@ -58,21 +58,7 @@ namespace ExchangeRates.BusinessLayer
                 string currencyFrom = string.Empty;
                 string currencyTo = string.Empty;
                 //Read Reference Currency from Config File
-                string refCurrency = ConfigurationManager.AppSettings["RefCurrency"]; //EUR
-
-                // Currency Pair Validations
-                if (string.IsNullOrEmpty(currencyPair))
-                {
-                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Currency Pair cannot be NULL or Empty");
-                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Currency Pair cannot be NULL or Empty");
-                    throw exception;
-                }
-                else if (currencyPair.Length > 6)
-                {
-                    Logger.Error("Error Occured in GetExchangeRate(): Invalid Currency Pair: Length Cannot be greater than 6");
-                    CustomException exception = new CustomException(System.Net.HttpStatusCode.BadRequest, "Invalid Currency Pair: Length Cannot be greater than 6");
-                    throw exception;
-                }
+                string refCurrency = ConfigurationManager.AppSettings["RefCurrency"]; //EUR             
 
 
                 // Get CurrencyTo and CurrencyFrom 
